@@ -39,3 +39,6 @@ A simple tank game. There are two players (ai-controlled, or split-screen) that 
 * Lecture 124
 * Lecture 125
 * Lecture 126
+* Lecture 127
+* Lecture 128
+* Lecture 129

@@ -6,7 +6,7 @@
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay(); //call the default behaviour before we go on
-	
+	UE_LOG(LogTemp, Warning, TEXT("PlayerController Begin Play"))
 
 	ATank* ControlledTank = GetControlledTank();
 	
@@ -16,7 +16,7 @@ void ATankPlayerController::BeginPlay()
 	}
 	else
 	{
-		UE_LOG(LogTemp,Warning,TEXT("The player-controlled Tank has the name: %s"), *(ControlledTank->GetName()))
+		UE_LOG(LogTemp,Warning,TEXT("The wonda second Tank has the name: %s"), *(ControlledTank->GetName()))
 	}
 }
 
