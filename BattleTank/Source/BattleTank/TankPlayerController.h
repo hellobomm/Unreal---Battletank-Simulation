@@ -37,7 +37,7 @@ private:
 	UPROPERTY(EditAnywhere)
 	float CrossHairYLocation=0.3333f;
 	UPROPERTY(EditAnywhere)
-	float LineTraceRange = 1000000;	//Range is 10km
+	float LineTraceRange = 1000000;	//Range is 10km 
 
 	void AimTowardsCrosshair(); //start the Tank moving the barrel so that a shot would hit	
 								//where the crosshair intersects the world
