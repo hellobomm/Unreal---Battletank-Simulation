@@ -1,6 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankAimingComponent.h"
+#include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
+#include "Runtime/Engine/Classes/Components/StaticMeshComponent.h"
+#include "TankBarrel.h"  //has to be included. Forward Declaration not working if a method is called here
 
 
 // Sets default values for this component's properties
@@ -14,35 +17,55 @@ UTankAimingComponent::UTankAimingComponent()
 }
 
 
-void UTankAimingComponent::SetBarrelReference(UStaticMeshComponent * BarrelToSet)
+void UTankAimingComponent::SetBarrelReference(UTankBarrel * BarrelToSet)
 {
 	Barrel = BarrelToSet;
 }
 
-// Called when the game starts
-void UTankAimingComponent::BeginPlay()
-{
-	Super::BeginPlay();
 
-	// ...
+void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
+{
+	if (!Barrel) return;
+
+	//UE_LOG(LogTemp,Warning,TEXT("Firing at %f"), LaunchSpeed)
+	FVector OutLaunchVelocity;
+	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile")); //Socket was put on Barrel in tank_fbx_Barrel
+
+	bool bHaveAimSolution = UGameplayStatics::SuggestProjectileVelocity
+															(	this,
+																OutLaunchVelocity,
+																StartLocation,
+																HitLocation,
+																LaunchSpeed,
+																ESuggestProjVelocityTraceOption::DoNotTrace);
+		
+	if (bHaveAimSolution)
+	{
+
+		FVector AimDirection;
+		float LaunchFinalSpeed;
+		OutLaunchVelocity.ToDirectionAndLength(AimDirection, LaunchFinalSpeed);
+
+		auto TankName = GetOwner()->GetName();
+		MoveBarrelToward(AimDirection);
+	}
+	else
+	{
+		//no solution
+		UE_LOG(LogTemp, Warning, TEXT("no solution"))
+	}
 	
 }
 
-
-// Called every frame
-void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UTankAimingComponent::MoveBarrelToward(FVector AimDirection)
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	//Work out difference between current barrel rotation and aimdirection
+	auto BarrelRotator = Barrel->GetForwardVector().Rotation();  //struct which contains yaw pitch roll
+	auto AimAsRotator = AimDirection.Rotation();
+	auto DeltaRotator = AimAsRotator - BarrelRotator;
 
-	// ...
+	UE_LOG(LogTemp, Warning, TEXT("AimAsRotator: %s"), *DeltaRotator.ToString())
+
+		Barrel->Elevate(5); //TODO remove magic number
+
 }
-
-void UTankAimingComponent::AimAt(FVector HitLocation)
-{
-	FVector BarrelLocation = Barrel->GetComponentLocation();
-	auto NameOfOurTank = GetOwner()->GetName();
-
-	
-	UE_LOG(LogTemp, Warning, TEXT("%s aims at %s from %s"), *NameOfOurTank, *HitLocation.ToString(), *BarrelLocation.ToString())
-}
-
