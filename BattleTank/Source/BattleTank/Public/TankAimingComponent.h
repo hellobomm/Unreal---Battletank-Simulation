@@ -7,8 +7,8 @@
 #include "TankAimingComponent.generated.h"
 
 
-class UTankBarrel; //Forward Declaration    - instead of using #include "TankBarrel.h"
-
+//Forward Declaration 
+class UTankBarrel; //   - instead of using #include "TankBarrel.h"
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )

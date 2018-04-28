@@ -2,6 +2,7 @@
 
 
 #include "TankAiController.h"
+#include "Tank.h"
 
 
 
