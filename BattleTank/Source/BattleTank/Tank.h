@@ -31,7 +31,8 @@ public:
 	UPROPERTY(EditAnywhere, Category = Firing)
 		float LaunchSpeed = 4000;
 
-
+	UFUNCTION(BlueprintCallable)
+		void fire();
 
 protected:
 	UTankAimingComponent* TankAimingComponent = nullptr;
