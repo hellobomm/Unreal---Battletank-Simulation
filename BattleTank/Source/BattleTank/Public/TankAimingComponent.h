@@ -9,6 +9,7 @@
 
 //Forward Declaration 
 class UTankBarrel; //   - instead of using #include "TankBarrel.h"
+class UTankTurret;
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -20,9 +21,7 @@ public:
 	// Sets default values for this component's properties
 	UTankAimingComponent();
 	void SetBarrelReference(UTankBarrel* BarrelToSet);
-
-	//TODO SetTurretReference
-
+	void SetTurretReference(UTankTurret* TurretToSet);
 
 public:	
 	// Called from Tank
@@ -32,8 +31,8 @@ public:
 private:
 	//U means it was inherrited ultimately from a UObject. The Barrel is a StaticMeshcomponent (see Tank Blueprint)
 	UTankBarrel* Barrel = nullptr;
-	
+	UTankTurret* Turret = nullptr;
+		
 	//called from AimAt
 	void MoveBarrelToward(FVector AimDirection);
-
 };
