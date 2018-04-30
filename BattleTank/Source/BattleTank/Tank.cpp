@@ -16,6 +16,9 @@ ATank::ATank()
 	//No need to protect pointers
 	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("Aiming Component"));
 
+	//Starting Timer
+	LastReloadTime = FPlatformTime::Seconds();
+
 }
 
 void ATank::SetBarrelReference(UTankBarrel * BarrelToSet)
@@ -52,10 +55,14 @@ void ATank::AimAt(FVector HitLocation)
 
 void ATank::fire()
 {
-	if (!Barrel)return;
-
-	auto Projectile = GetWorld()->SpawnActor<AProjectile>(	ProjectileBlueprint, 
-											Barrel->GetSocketLocation(FName("Projectile")), //Socket was put on Barrel in tank_fbx_Barrel, 
-											Barrel->GetSocketRotation(FName("Projectile")));
-	Projectile->LaunchProjectile(LaunchSpeed);
+	//bool isReloaded = (FPlatformTime::Seconds() - LastReloadTime) > ReloadSeconds;
+	//
+	//if (Barrel&&isReloaded)
+	//{
+	//	auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint,
+	//		Barrel->GetSocketLocation(FName("Projectile")), //Socket was put on Barrel in tank_fbx_Barrel, 
+	//		Barrel->GetSocketRotation(FName("Projectile")));
+	//	Projectile->LaunchProjectile(LaunchSpeed);
+	//	LastReloadTime = FPlatformTime::Seconds();
+	//}
 }

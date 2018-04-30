@@ -23,8 +23,6 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
-	ATank* GetControlledTank()const;
-	ATank* GetPlayerTank() const;
 	void BeginPlay() override; //virtual function in the parent (Actor). A virtual function may be overwritten
 							   
 
