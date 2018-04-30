@@ -55,14 +55,17 @@ void ATank::AimAt(FVector HitLocation)
 
 void ATank::fire()
 {
-	//bool isReloaded = (FPlatformTime::Seconds() - LastReloadTime) > ReloadSeconds;
-	//
-	//if (Barrel&&isReloaded)
-	//{
+	bool isReloaded = (FPlatformTime::Seconds() - LastReloadTime) > ReloadSeconds;
+	
+	if (Barrel&&isReloaded)
+	{
 	//	auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint,
 	//		Barrel->GetSocketLocation(FName("Projectile")), //Socket was put on Barrel in tank_fbx_Barrel, 
 	//		Barrel->GetSocketRotation(FName("Projectile")));
 	//	Projectile->LaunchProjectile(LaunchSpeed);
-	//	LastReloadTime = FPlatformTime::Seconds();
-	//}
+		LastReloadTime = FPlatformTime::Seconds();
+
+		auto Time = GetWorld()->GetTimeSeconds();
+		UE_LOG(LogTemp, Warning, TEXT("%f: projectile launched!"), Time)
+	}
 }
