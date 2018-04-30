@@ -18,48 +18,5 @@ A simple tank game. There are two players (ai-controlled, or split-screen) that 
 * Support for AI;
 * Support for split-screen mode.
 
-## Lecture List
-* Lecture 106
-* Lecture 107
-* Lecture 108
-* Lecture 109
-* Lecture 110
-* Lecture 111
-* Lecture 112
-* Lecture 113
-* Lecture 114
-* Lecture 115
-* Lecture 116
-* Lecture 117
-* Lecture 118
-* Lecture 119
-* Lecture 120
-* Lecture 121
-* Lecture 122
-* Lecture 124
-* Lecture 125
-* Lecture 126
-* Lecture 127
-* Lecture 128
-* Lecture 129
-* Lecture 130
-* Lecture 131
-* Lecture 132
-* Lecture 133
-* Lecture 134
-* Lecture 135
-* Lecture 136
-* Lecture 137
-* Lecture 138
-* Lecture 139
-* Lecture 140
-* Lecture 141
-* Lecture 142
-* Lecture 143
-* Lecture 144
-* Lecture 145
-* Lecture 146
-* Lecture 147
-* Lecture 148
-* Lecture 149
-* Lecture 150
+## Lecture
+* Lecture 155

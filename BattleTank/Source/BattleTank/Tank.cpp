@@ -54,10 +54,8 @@ void ATank::fire()
 {
 	if (!Barrel)return;
 
-	GetWorld()->SpawnActor<AProjectile>(	ProjectileBlueprint, 
+	auto Projectile = GetWorld()->SpawnActor<AProjectile>(	ProjectileBlueprint, 
 											Barrel->GetSocketLocation(FName("Projectile")), //Socket was put on Barrel in tank_fbx_Barrel, 
 											Barrel->GetSocketRotation(FName("Projectile")));
-
-	UE_LOG(LogTemp, Warning, TEXT("fire!"))
-
+	Projectile->LaunchProjectile(LaunchSpeed);
 }
