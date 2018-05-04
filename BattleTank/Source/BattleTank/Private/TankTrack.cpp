@@ -18,9 +18,8 @@ void UTankTrack::SetThrottle(float Throttle)
 	TankRoot->AddForceAtLocation(ForceApplied, ForceLocation);
 
 	//auto Time = GetWorld()->GetTimeSeconds();
-	auto TrackName = GetName();
-	UE_LOG(LogTemp, Warning, TEXT("%s: force at: %s"), *TrackName, *(ForceApplied.ToString()))
-
+	/*auto TrackName = GetName();
+	UE_LOG(LogTemp, Warning, TEXT("%s: force at: %s"), *TrackName, *(ForceApplied.ToString()))*/
 
 }
 

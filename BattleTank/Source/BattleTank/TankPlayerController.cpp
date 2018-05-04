@@ -9,18 +9,6 @@
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay(); //call the default behaviour before we go on
-	
-
-	ATank* ControlledTank = GetControlledTank();
-	
-	if (!ControlledTank)
-	{
-		UE_LOG(LogTemp,Error,TEXT("PlayerController did not find the controlled Tank"))
-	}
-	else
-	{
-		UE_LOG(LogTemp,Warning,TEXT("The player-controlled Tank has the name: %s"), *(ControlledTank->GetName()))
-	}
 }
 
 void ATankPlayerController::Tick(float DeltaTime)

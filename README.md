@@ -18,6 +18,4 @@ A simple tank game. There are two players (ai-controlled, or split-screen) that 
 * Support for AI;
 * Support for split-screen mode.
 
-## Lecture
-* Lecture 155
-* afterthebang 156
+## Lecture 163

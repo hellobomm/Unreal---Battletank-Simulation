@@ -2,6 +2,7 @@
 
 #include "Tank.h"
 #include "TankAimingComponent.h"
+#include "TankMovementComponent.h"
 #include "TankBarrel.h"
 #include "Projectile.h"
 
@@ -15,6 +16,7 @@ ATank::ATank()
 
 	//No need to protect pointers
 	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("Aiming Component"));
+	TankMovementComponent = CreateDefaultSubobject<UTankMovementComponent>(FName("Movement Component"));
 
 	//Starting Timer
 	LastReloadTime = FPlatformTime::Seconds();
@@ -55,7 +57,6 @@ void ATank::AimAt(FVector HitLocation)
 
 void ATank::fire()
 {
-	return; //TODO
 	bool isReloaded = (FPlatformTime::Seconds() - LastReloadTime) > ReloadSeconds;
 	
 	if (Barrel&&isReloaded)
@@ -63,7 +64,13 @@ void ATank::fire()
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint,
 			Barrel->GetSocketLocation(FName("Projectile")), //Socket was put on Barrel in tank_fbx_Barrel, 
 			Barrel->GetSocketRotation(FName("Projectile")));
-		Projectile->LaunchProjectile(LaunchSpeed);
+
+		if (!Projectile)
+		{
+			UE_LOG(LogTemp,Error, TEXT("Spawn of Projectile failed. Check if the Projectile Blueprint in TankBlueprint is set"))
+			GetWorld()->GetFirstPlayerController()->ConsoleCommand("quit");
+		}
+		else Projectile->LaunchProjectile(LaunchSpeed);
 		LastReloadTime = FPlatformTime::Seconds();
 	}
 }
