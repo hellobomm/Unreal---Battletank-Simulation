@@ -22,8 +22,13 @@ class BATTLETANK_API ATankAiController : public AAIController
 public:
 	virtual void Tick(float DeltaTime) override;
 
+	//How close can the AI Tank get to the player
+	UPROPERTY(EditAnywhere)
+	float AcceptanceRadius = 3000.f;
+
 private:
 	void BeginPlay() override; //virtual function in the parent (Actor). A virtual function may be overwritten
-							   
 
+	
+							   
 };

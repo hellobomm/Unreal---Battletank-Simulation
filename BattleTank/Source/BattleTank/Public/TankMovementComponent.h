@@ -11,7 +11,7 @@ class UTankTrack;
  * Responsible to drive the tank tracks
  */
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
-class BATTLETANK_API UTankMovementComponent : public UNavMovementComponent
+class BATTLETANK_API UTankMovementComponent : public UNavMovementComponent   //we used NavMovementComponent as it works with Pathfinding
 {
 	GENERATED_BODY()
 
@@ -20,6 +20,9 @@ public:
 		void IntendMoveForward(float Throw);
 	UFUNCTION(BlueprintCallable)
 		void IntendTurnRight(float Throw);
+
+	//TODO check best protection for this method
+	virtual void RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) override;
 
 
 	UFUNCTION(BlueprintCallable, Category = SetUp)

@@ -25,3 +25,12 @@ void UTankMovementComponent::IntendTurnRight(float Throw)
 	LeftTrack->SetThrottle(Throw);
 	RightTrack->SetThrottle(-Throw);
 }
+
+void UTankMovementComponent::RequestDirectMove(const FVector & MoveVelocity, bool bForceMaxSpeed)
+{
+	//this method is called by TankAiController (which contolles the AiTank) indirectly when calling MoveToActor() 
+	//and we are intercepting it to use this for the movement of the AiTank
+	//no Super call necessary as we are completely overwrighting the existing game engine method
+
+	UE_LOG(LogTemp, Warning, TEXT("%s wants to move with velocity: ,%s"), *(GetOwner()->GetName()), *MoveVelocity.ToString());
+}

@@ -22,6 +22,10 @@ void ATankAiController::Tick(float DeltaTime)
 
 	if (PlayerTank)
 	{
+		//Move towards the player   (generates a request to move along a vector towards the player. 
+									//Then the RequestDirectMove() for the controlled tank is called which can be overidden)
+		MoveToActor(PlayerTank, AcceptanceRadius); //TODO check radius is in cm
+
 		ControlledTank->AimAt(PlayerTank->GetActorLocation());
 		ControlledTank->fire();
 	}
