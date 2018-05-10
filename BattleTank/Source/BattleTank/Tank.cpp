@@ -55,6 +55,7 @@ void ATank::AimAt(FVector HitLocation)
 
 void ATank::fire()
 {
+	return; //TODO
 	bool isReloaded = (FPlatformTime::Seconds() - LastReloadTime) > ReloadSeconds;
 	
 	if (Barrel&&isReloaded)

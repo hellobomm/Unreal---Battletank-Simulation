@@ -5,6 +5,7 @@
 
 
 
+
 void UTankMovementComponent::Initialize(UTankTrack* LeftTrackToSet, UTankTrack* RightTrackToSet)
 {
 	LeftTrack = LeftTrackToSet;
@@ -28,9 +29,22 @@ void UTankMovementComponent::IntendTurnRight(float Throw)
 
 void UTankMovementComponent::RequestDirectMove(const FVector & MoveVelocity, bool bForceMaxSpeed)
 {
-	//this method is called by TankAiController (which contolles the AiTank) indirectly when calling MoveToActor() 
+	//this method is called by TankAiController (which contols the AiTank) indirectly when calling MoveToActor() 
 	//and we are intercepting it to use this for the movement of the AiTank
 	//no Super call necessary as we are completely overwrighting the existing game engine method
+	auto AIForwardIntention = MoveVelocity.GetSafeNormal();
+	auto TankForward = GetOwner()->GetActorForwardVector().GetSafeNormal();
+	
+	auto ForwardThrow = FVector::DotProduct(TankForward, AIForwardIntention);
+	//one when parallel, zero when perpendicular
+	
+	auto RightThrow = FVector::CrossProduct(TankForward, AIForwardIntention).Z;
+	//zero when parallel, one when perpendicular
 
-	UE_LOG(LogTemp, Warning, TEXT("%s wants to move with velocity: ,%s"), *(GetOwner()->GetName()), *MoveVelocity.ToString());
+	//move fast when same direction. stop when perpendicular
+	IntendMoveForward(ForwardThrow);
+
+	//rotate, when Forward and Intention are not facing in same direction
+	//UE_LOG(LogTemp, Warning, TEXT("crosslength: %f"), RightThrow)
+	IntendTurnRight(RightThrow);
 }
