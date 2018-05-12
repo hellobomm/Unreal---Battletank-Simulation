@@ -24,23 +24,24 @@ class UTankBarrel; //   - instead of using #include "TankBarrel.h"
 class UTankTurret;
 
 
-UCLASS(meta=(BlueprintSpawnableComponent) )
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class BATTLETANK_API UTankAimingComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:	
-	// Sets default values for this component's properties
-	UTankAimingComponent();
-	void SetBarrelReference(UTankBarrel* BarrelToSet);
-	void SetTurretReference(UTankTurret* TurretToSet);
-
-public:	
 	// Called from Tank
 	void AimAt(FVector HitLocation, float LaunchSpeed);
 
+	UFUNCTION(BlueprintCallable, Category = "SetUp")
+	void Initialize(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet);
+
+
 
 private:
+	// Sets default values for this component's properties
+	UTankAimingComponent();
+
 	//U means it was inherrited ultimately from a UObject. The Barrel is a StaticMeshcomponent (see Tank Blueprint)
 	UTankBarrel* Barrel = nullptr;
 	UTankTurret* Turret = nullptr;

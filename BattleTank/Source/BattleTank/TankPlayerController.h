@@ -27,7 +27,7 @@ public:
 	virtual void Tick(float DeltaTime) override;	 // Called every frame
 
 protected:
-	UFUNCTION(BlueprintCallable, Category = "Setup")  //must not be private because the Blueprint is a subclass of this class here
+	UFUNCTION(BlueprintCallable, Category = "SetUp")  //must not be private because the Blueprint is a subclass of this class here
 		ATank* GetControlledTank()const;
 
 private:
