@@ -29,7 +29,6 @@ void UTankMovementComponent::IntendTurnRight(float Throw)
 
 void UTankMovementComponent::RequestDirectMove(const FVector & MoveVelocity, bool bForceMaxSpeed)
 {
-	UE_LOG(LogTemp, Warning, TEXT("dodo"))
 	//this method is called by TankAiController (which contols the AiTank) indirectly when calling MoveToActor() 
 	//and we are intercepting it to use this for the movement of the AiTank
 	//no Super call necessary as we are completely overwrighting the existing game engine method
@@ -46,6 +45,5 @@ void UTankMovementComponent::RequestDirectMove(const FVector & MoveVelocity, boo
 	IntendMoveForward(ForwardThrow);
 
 	//rotate, when Forward and Intention are not facing in same direction
-	UE_LOG(LogTemp, Warning, TEXT("crosslength: %f"), RightThrow)
 	IntendTurnRight(RightThrow);
 }
