@@ -52,5 +52,5 @@ private:
 protected:
 	//define the Status of the TankAimingComponent
 	UPROPERTY(BlueprintReadOnly, Category = "State")
-	EFiringState FiringState = EFiringState::Reloading;
+	EFiringState FiringState = EFiringState::Aiming;
 };
