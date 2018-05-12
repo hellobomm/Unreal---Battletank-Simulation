@@ -7,6 +7,18 @@
 #include "TankAimingComponent.generated.h"
 
 
+
+//Enum for aiming state
+UENUM()
+enum class EFiringState : uint8
+{
+	Reloading,
+	Aiming,
+	Locked
+};
+
+
+
 //Forward Declaration 
 class UTankBarrel; //   - instead of using #include "TankBarrel.h"
 class UTankTurret;
@@ -35,4 +47,9 @@ private:
 		
 	//called from AimAt
 	void MoveBarrelToward(FVector AimDirection);
+
+protected:
+	//define the Status of the TankAimingComponent
+	UPROPERTY(BlueprintReadOnly, Category = "State")
+	EFiringState FiringState = EFiringState::Reloading;
 };

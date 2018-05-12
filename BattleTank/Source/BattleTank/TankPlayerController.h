@@ -26,15 +26,14 @@ public:
 
 	virtual void Tick(float DeltaTime) override;	 // Called every frame
 
+protected:
+	UFUNCTION(BlueprintCallable, Category = "Setup")  //must not be private because the Blueprint is a subclass of this class here
+		ATank* GetControlledTank()const;
 
 private:
 
-	ATank* GetControlledTank()const;
-
 	bool GetLookDirection(FVector2D ScreenLocation, FVector & LookDirection, FVector& CameraWorldLocation) const;
 	
-	
-
 	UPROPERTY(EditDefaultsOnly)
 	float CrossHairXLocation=0.5f;
 	UPROPERTY(EditDefaultsOnly)
