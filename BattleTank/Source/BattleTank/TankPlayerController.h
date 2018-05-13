@@ -7,13 +7,14 @@
 #include "GameFramework/PlayerController.h"
 #include "TankPlayerController.generated.h" //must be the last include
 
+
+//Forward Declarations
+class ATank;
+class UTankAimingComponent;
+
 /**
- * 
+ * Responsible for helping the player aim
  */
- //Forward Declarations
-class ATank; 
-
-
 UCLASS()
 class BATTLETANK_API ATankPlayerController : public APlayerController
 {
@@ -30,6 +31,9 @@ protected:
 	UFUNCTION(BlueprintCallable, Category = "SetUp")  //must not be private because the Blueprint is a subclass of this class here
 		ATank* GetControlledTank()const;
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "SetUp") //this makro makes it possible that we don't need a definition of the
+		void FoundAimingComponent(UTankAimingComponent* AimCompRef); //function. In fact the makro generates it before compilation (see generated file)
+																
 private:
 
 	bool GetLookDirection(FVector2D ScreenLocation, FVector & LookDirection, FVector& CameraWorldLocation) const;
