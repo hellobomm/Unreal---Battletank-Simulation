@@ -27,8 +27,7 @@ void UTankAimingComponent::Initialize(UTankBarrel * BarrelToSet, UTankTurret * T
 
 void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 {
-	if (!Barrel) return;
-	if (!Turret) return;
+	if (!ensure(Barrel&&Turret))return;
 
 	FVector OutLaunchVelocity;
 	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile")); //Socket was put on Barrel in tank_fbx_Barrel
@@ -69,7 +68,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 void UTankAimingComponent::MoveBarrelToward(FVector AimDirection)
 {
 	//Work out difference between current barrel rotation and aimdirection
-	if (!Barrel||!Turret) return;
+	if (!ensure(Barrel&&Turret))return;
 	auto BarrelRotator = Barrel->GetForwardVector().Rotation();  //struct which contains yaw pitch roll
 	auto AimAsRotator = AimDirection.Rotation();
 	auto DeltaRotator = AimAsRotator - BarrelRotator;

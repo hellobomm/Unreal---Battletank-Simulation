@@ -11,7 +11,7 @@ void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay(); //call the default behaviour before we go on
 	UTankAimingComponent* AimingComponent = GetControlledTank()->FindComponentByClass<UTankAimingComponent>();
-	if(AimingComponent)
+	if(ensure(AimingComponent))
 	{
 		FoundAimingComponent(AimingComponent); //this triggers the blueprint event
 	}
@@ -30,7 +30,7 @@ void ATankPlayerController::Tick(float DeltaTime)
 
 void ATankPlayerController::AimTowardsCrosshair()
 {
-	if (!GetControlledTank())return;
+	if (!ensure(GetControlledTank()))return;
 
 	FVector HitLocation; //Out Parameter
 	if (GetSightRayHitLocation(HitLocation))

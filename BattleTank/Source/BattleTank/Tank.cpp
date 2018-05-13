@@ -21,15 +21,16 @@ ATank::ATank()
 // as the name says
 void ATank::AimAt(FVector HitLocation)
 {
-	if (!TankAimingComponent)return;
+	if (!ensure(TankAimingComponent)) return;
 	TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
 }
 
 void ATank::fire()
 {
+	if (!ensure(Barrel))return;
 	bool isReloaded = (FPlatformTime::Seconds() - LastReloadTime) > ReloadSeconds;
 	
-	if (Barrel&&isReloaded)
+	if (isReloaded)
 	{
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint,
 			Barrel->GetSocketLocation(FName("Projectile")), //Socket was put on Barrel in tank_fbx_Barrel, 

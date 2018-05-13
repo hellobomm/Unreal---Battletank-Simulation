@@ -29,7 +29,7 @@ void AProjectile::Tick(float DeltaTime)
 
 void AProjectile::LaunchProjectile(float speed)
 {
-	if (!ProjectileMovement)return;
+	if (!ensure(ProjectileMovement))return;
 	ProjectileMovement->SetVelocityInLocalSpace(FVector::ForwardVector*speed);
 	ProjectileMovement->Activate(true);
 	/*auto Time = GetWorld()->GetTimeSeconds();
