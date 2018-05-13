@@ -34,10 +34,13 @@ protected:
 private:
 	// Sets default values for this pawn's properties
 	ATank();
+
+	void BeginPlay();
 	
 	UPROPERTY(EditDefaultsOnly, Category = "SetUp")
 		TSubclassOf<AProjectile> ProjectileBlueprint; //makes the "ProjectileBlueprint" available to the TankBlueprint
 	
+	//TODO remove once firing is moved to aiming component
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")   //EditAnyWhere means, value can be edited in every instance and set to a different value
 		float LaunchSpeed = 4000;
 

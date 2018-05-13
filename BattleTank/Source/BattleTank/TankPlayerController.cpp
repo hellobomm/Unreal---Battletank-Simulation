@@ -11,15 +11,9 @@ void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay(); //call the default behaviour before we go on
 	UTankAimingComponent* AimingComponent = GetControlledTank()->FindComponentByClass<UTankAimingComponent>();
-	if(ensure(AimingComponent))
-	{
-		FoundAimingComponent(AimingComponent); //this triggers the blueprint event
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("PlayerController can't find aiming component at BeginPlay"))
-	}
+	if (!ensure(AimingComponent)) return;
 	
+	FoundAimingComponent(AimingComponent); //this triggers the blueprint event
 }
 
 void ATankPlayerController::Tick(float DeltaTime)
