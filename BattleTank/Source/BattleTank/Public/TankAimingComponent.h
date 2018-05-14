@@ -30,13 +30,11 @@ class BATTLETANK_API UTankAimingComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:	
-	// Called from Tank
-	void AimAt(FVector HitLocation, float LaunchSpeed);
+	// Called from AIController and PlayerController
+	void AimAt(FVector HitLocation);
 
 	UFUNCTION(BlueprintCallable, Category = "SetUp")
 	void Initialize(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet);
-
-
 
 private:
 	// Sets default values for this component's properties
@@ -48,6 +46,11 @@ private:
 		
 	//called from AimAt
 	void MoveBarrelToward(FVector AimDirection);
+
+	//TODO remove once firing is moved to aiming component
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")   //EditAnyWhere means, value can be edited in every instance and set to a different value
+		float LaunchSpeed = 4000;
+
 
 protected:
 	//define the Status of the TankAimingComponent

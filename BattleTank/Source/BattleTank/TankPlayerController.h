@@ -9,7 +9,6 @@
 
 
 //Forward Declarations
-class ATank;
 class UTankAimingComponent;
 
 /**
@@ -28,12 +27,9 @@ public:
 	virtual void Tick(float DeltaTime) override;	 // Called every frame
 
 protected:
-	UFUNCTION(BlueprintCallable, Category = "SetUp")  //must not be private because the Blueprint is a subclass of this class here
-		ATank* GetControlledTank()const;
-
 	UFUNCTION(BlueprintImplementableEvent, Category = "SetUp") //this makro makes it possible that we don't need a definition of the
 		void FoundAimingComponent(UTankAimingComponent* AimCompRef); //function. In fact the makro generates it before compilation (see generated file)
-																
+					
 private:
 
 	bool GetLookDirection(FVector2D ScreenLocation, FVector & LookDirection, FVector& CameraWorldLocation) const;

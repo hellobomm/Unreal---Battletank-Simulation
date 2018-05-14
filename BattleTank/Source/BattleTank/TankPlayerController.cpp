@@ -3,16 +3,16 @@
 
 #include "TankPlayerController.h"
 #include "TankAimingComponent.h"
-#include "Tank.h"
 
 
 
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay(); //call the default behaviour before we go on
-	UTankAimingComponent* AimingComponent = GetControlledTank()->FindComponentByClass<UTankAimingComponent>();
+
+	UTankAimingComponent* AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
 	if (!ensure(AimingComponent)) return;
-	
+
 	FoundAimingComponent(AimingComponent); //this triggers the blueprint event
 }
 
@@ -24,13 +24,14 @@ void ATankPlayerController::Tick(float DeltaTime)
 
 void ATankPlayerController::AimTowardsCrosshair()
 {
-	if (!ensure(GetControlledTank()))return;
+	UTankAimingComponent* AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
+	if (!ensure(AimingComponent)) return;
 
 	FVector HitLocation; //Out Parameter
 	if (GetSightRayHitLocation(HitLocation))
 	{
-		//Tell controlled tank to point at this tank
-		GetControlledTank()->AimAt(HitLocation);
+		//Tell Aiming Component to point at this tank
+		AimingComponent->AimAt(HitLocation);
 	}
 	else
 	{
@@ -81,12 +82,6 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector &CameraWorldLocatio
 	
 	HitLocation = ResultOfHit.Location;
 	return true;
-}
-
-
-ATank* ATankPlayerController::GetControlledTank()const
-{
-	return Cast<ATank>(GetPawn());
 }
 
 bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection, FVector& CameraWorldLocation) const

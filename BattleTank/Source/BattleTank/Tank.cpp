@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Tank.h"
-#include "TankAimingComponent.h"
 #include "TankBarrel.h"
 #include "Projectile.h"
 
@@ -21,33 +20,26 @@ ATank::ATank()
 void ATank::BeginPlay()
 {
 	Super::BeginPlay(); //Needed for BP BeginPlay to run!
-	TankAimingComponent = FindComponentByClass<UTankAimingComponent>();
 }
 
-// as the name says
-void ATank::AimAt(FVector HitLocation)
-{
-	if (!ensure(TankAimingComponent)) return;
-	TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
-}
 
 void ATank::fire()
 {
-	if (!ensure(Barrel))return;
-	bool isReloaded = (FPlatformTime::Seconds() - LastReloadTime) > ReloadSeconds;
-	
-	if (isReloaded)
-	{
-		auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint,
-			Barrel->GetSocketLocation(FName("Projectile")), //Socket was put on Barrel in tank_fbx_Barrel, 
-			Barrel->GetSocketRotation(FName("Projectile")));
+	//if (!ensure(Barrel))return;
+	//bool isReloaded = (FPlatformTime::Seconds() - LastReloadTime) > ReloadSeconds;
+	//
+	//if (isReloaded)
+	//{
+	//	auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint,
+	//		Barrel->GetSocketLocation(FName("Projectile")), //Socket was put on Barrel in tank_fbx_Barrel, 
+	//		Barrel->GetSocketRotation(FName("Projectile")));
 
-		if (!Projectile)
-		{
-			UE_LOG(LogTemp,Error, TEXT("Spawn of Projectile failed. Check if the Projectile Blueprint in TankBlueprint is set"))
-			GetWorld()->GetFirstPlayerController()->ConsoleCommand("quit");
-		}
-		else Projectile->LaunchProjectile(LaunchSpeed);
-		LastReloadTime = FPlatformTime::Seconds();
-	}
+	//	if (!Projectile)
+	//	{
+	//		UE_LOG(LogTemp,Error, TEXT("Spawn of Projectile failed. Check if the Projectile Blueprint in TankBlueprint is set"))
+	//		GetWorld()->GetFirstPlayerController()->ConsoleCommand("quit");
+	//	}
+	////	else Projectile->LaunchProjectile(LaunchSpeed);  TODO this will end up in Aiming Component
+	//	LastReloadTime = FPlatformTime::Seconds();
+	//}
 }

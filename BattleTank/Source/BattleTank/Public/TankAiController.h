@@ -7,12 +7,11 @@
 #include "TankAiController.generated.h"
 //Depends on movement component via pathfinding system
 
+class UTankAimingComponent;
 
 /**
  * 
  */
- //Forward Declarations
-class ATank; 
 
 
 UCLASS()
@@ -29,8 +28,5 @@ public:
 	float AcceptanceRadius = 3000.f;
 
 private:
-	void BeginPlay() override; //virtual function in the parent (Actor). A virtual function may be overwritten
-
-	
-							   
+	void BeginPlay() override; //virtual function in the parent (Actor). A virtual function may be overwritten					   
 };
