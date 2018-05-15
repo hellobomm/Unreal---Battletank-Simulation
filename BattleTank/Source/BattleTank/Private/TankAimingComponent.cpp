@@ -14,17 +14,34 @@ UTankAimingComponent::UTankAimingComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = false;
+	PrimaryComponentTick.bCanEverTick = true;
+}
+
+void UTankAimingComponent::BeginPlay()
+{
+	Super::BeginPlay();
 
 	//Starting Timer
 	LastReloadTime = FPlatformTime::Seconds();
 }
 
 
+
 void UTankAimingComponent::Initialize(UTankBarrel * BarrelToSet, UTankTurret * TurretToSet)
 {
 	Barrel = BarrelToSet;
 	Turret = TurretToSet;
+}
+
+
+void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunktion)
+{
+	if ((FPlatformTime::Seconds() - LastReloadTime) > ReloadSeconds)
+	{
+		FiringState = EFiringState::Aiming;
+		
+	}
+	else FiringState = EFiringState::Reloading;
 }
 
 
@@ -85,9 +102,9 @@ void UTankAimingComponent::MoveBarrelToward(FVector AimDirection)
 void UTankAimingComponent::fire()
 {
 	if (!ensure(Barrel&&ProjectileBlueprint))return;
-	bool isReloaded = (FPlatformTime::Seconds() - LastReloadTime) > ReloadSeconds;
 	
-	if (isReloaded)
+	
+	if (FiringState != EFiringState::Reloading)
 	{
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint,
 						Barrel->GetSocketLocation(FName("Projectile")), //Socket was put on Barrel in tank_fbx_Barrel, 

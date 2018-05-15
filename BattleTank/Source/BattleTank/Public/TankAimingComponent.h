@@ -31,6 +31,7 @@ class BATTLETANK_API UTankAimingComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:	
+	
 	// Called from AIController and PlayerController
 	void AimAt(FVector HitLocation);
 
@@ -41,8 +42,12 @@ public:
 		void fire();
 
 private:
+	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunktion) override;
+
 	// Sets default values for this component's properties
 	UTankAimingComponent();
+
+	void BeginPlay() override;
 		
 	//called from AimAt
 	void MoveBarrelToward(FVector AimDirection);
@@ -67,5 +72,5 @@ private:
 protected:
 	//define the Status of the TankAimingComponent
 	UPROPERTY(BlueprintReadOnly, Category = "State")
-	EFiringState FiringState = EFiringState::Aiming;
+	EFiringState FiringState = EFiringState::Reloading;
 };
