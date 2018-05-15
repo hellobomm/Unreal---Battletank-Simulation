@@ -7,7 +7,6 @@
 #include "TankAiController.generated.h"
 //Depends on movement component via pathfinding system
 
-class UTankAimingComponent;
 
 /**
  * 

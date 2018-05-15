@@ -22,6 +22,7 @@ enum class EFiringState : uint8
 //Forward Declaration 
 class UTankBarrel; //   - instead of using #include "TankBarrel.h"
 class UTankTurret;
+class AProjectile;
 
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
@@ -36,13 +37,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "SetUp")
 	void Initialize(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet);
 
+	UFUNCTION(BlueprintCallable)
+		void fire();
+
 private:
 	// Sets default values for this component's properties
 	UTankAimingComponent();
-
-	//U means it was inherrited ultimately from a UObject. The Barrel is a StaticMeshcomponent (see Tank Blueprint)
-	UTankBarrel* Barrel = nullptr;
-	UTankTurret* Turret = nullptr;
 		
 	//called from AimAt
 	void MoveBarrelToward(FVector AimDirection);
@@ -50,6 +50,18 @@ private:
 	//TODO remove once firing is moved to aiming component
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")   //EditAnyWhere means, value can be edited in every instance and set to a different value
 		float LaunchSpeed = 4000;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+		double ReloadSeconds = 3;
+
+	double LastReloadTime = 0.0;
+
+	UPROPERTY(EditDefaultsOnly, Category = "SetUp")
+		TSubclassOf<AProjectile> ProjectileBlueprint; //makes the "ProjectileBlueprint" available to the TankBlueprint
+
+													  //U means it was inherrited ultimately from a UObject. The Barrel is a StaticMeshcomponent (see Tank Blueprint)
+	UTankBarrel* Barrel = nullptr;
+	UTankTurret* Turret = nullptr;
 
 
 protected:

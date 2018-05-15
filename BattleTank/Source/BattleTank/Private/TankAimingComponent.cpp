@@ -3,8 +3,10 @@
 #include "TankAimingComponent.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "Runtime/Engine/Classes/Components/StaticMeshComponent.h"
+#include "Engine/World.h"
 #include "TankBarrel.h"  //has to be included. Forward Declaration not working if a method is called here
 #include "TankTurret.h" //has to be included. Forward Declaration not working if a method is called here
+#include "Projectile.h"
 
 
 // Sets default values for this component's properties
@@ -14,7 +16,8 @@ UTankAimingComponent::UTankAimingComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = false;
 
-	// ...
+	//Starting Timer
+	LastReloadTime = FPlatformTime::Seconds();
 }
 
 
@@ -76,4 +79,26 @@ void UTankAimingComponent::MoveBarrelToward(FVector AimDirection)
 	Barrel->Elevate(DeltaRotator.Pitch);
 	Turret->Rotate(DeltaRotator.Yaw);
 
+}
+
+
+void UTankAimingComponent::fire()
+{
+	if (!ensure(Barrel&&ProjectileBlueprint))return;
+	bool isReloaded = (FPlatformTime::Seconds() - LastReloadTime) > ReloadSeconds;
+	
+	if (isReloaded)
+	{
+		auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint,
+						Barrel->GetSocketLocation(FName("Projectile")), //Socket was put on Barrel in tank_fbx_Barrel, 
+						Barrel->GetSocketRotation(FName("Projectile")));
+
+		if (!Projectile)
+		{
+			UE_LOG(LogTemp,Error, TEXT("Spawn of Projectile failed. Check if the Projectile Blueprint in TankBlueprint is set"))
+			GetWorld()->GetFirstPlayerController()->ConsoleCommand("quit");
+		}
+		else Projectile->LaunchProjectile(LaunchSpeed); 
+		LastReloadTime = FPlatformTime::Seconds();
+	}
 }
