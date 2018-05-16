@@ -39,16 +39,13 @@ void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickTy
 	if ((FPlatformTime::Seconds() - LastReloadTime) < ReloadSeconds)
 	{
 		FiringState = EFiringState::Reloading;
-		//UE_LOG(LogTemp, Warning, TEXT("reloading"))
 	}
 	else if (isBarrelMoving())
 		{
-			//UE_LOG(LogTemp, Warning, TEXT("aiming"))
 			FiringState = EFiringState::Aiming;
 		}
 		else
 		{
-			//UE_LOG(LogTemp, Warning, TEXT("locked"))
 			FiringState = EFiringState::Locked;
 		}
 }
@@ -107,12 +104,16 @@ void UTankAimingComponent::MoveBarrelToward(FVector AimDirection)
 bool UTankAimingComponent::isBarrelMoving()
 {
 	FVector CurrentForwardVector = Barrel->GetForwardVector();
-	return !AimDirection.Equals(CurrentForwardVector,0.01f);
+	bool isNOTmoving = AimDirection.Equals(CurrentForwardVector);
+	if (isNOTmoving) UE_LOG(LogTemp, Warning, TEXT("not moving"))
+	if (!isNOTmoving) UE_LOG(LogTemp, Warning, TEXT("moving"))
+
 }
 
 void UTankAimingComponent::fire()
 {
 	if (!ensure(Barrel&&ProjectileBlueprint))return;
+	
 	
 	if (FiringState != EFiringState::Reloading)
 	{

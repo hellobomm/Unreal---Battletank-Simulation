@@ -52,6 +52,8 @@ private:
 	//called from AimAt
 	void MoveBarrelToward(FVector AimDirection);
 
+	bool isBarrelMoving();
+
 	//TODO remove once firing is moved to aiming component
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")   //EditAnyWhere means, value can be edited in every instance and set to a different value
 		float LaunchSpeed = 4000;
@@ -68,6 +70,7 @@ private:
 	UTankBarrel* Barrel = nullptr;
 	UTankTurret* Turret = nullptr;
 
+	FVector AimDirection{ FVector(1.f,0.f,0.f) };
 
 protected:
 	//define the Status of the TankAimingComponent
