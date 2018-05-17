@@ -1,6 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+
+
 #include "TankTrack.h"
+#include "Engine/World.h"
 
 
 
@@ -20,30 +23,32 @@ void UTankTrack::BeginPlay()
 }
 
 
+//gets called every frame if there is contact
 void UTankTrack::OnHit(UPrimitiveComponent* HitComponent,
 						AActor* OtherActor,
 						UPrimitiveComponent* OtherComponent,
 						FVector NormalImpulse,
 						const FHitResult& Hit)
 {
-	UE_LOG(LogTemp,Warning,TEXT("%s   hit"), *GetName())
+	//Drive the Track
+	DriveTrack();
 
+	//Apply a sideways Force
+	ApplySideWaysForce();
 
+	//Reset Throttle
+	CurrentThrottle = 0.f;
 }
 
-
-
-
-void UTankTrack::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunktion)
+void UTankTrack::ApplySideWaysForce()
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunktion);
-
 	//calculate slippage speed
 	auto SlippageSpeed = FVector::DotProduct(GetRightVector(), GetOwner()->GetVelocity());
 
 	//UE_LOG(LogTemp,Warning,TEXT("%f"),SlippageSpeed)
 
 	//work out the required acceleration this frame to correct
+	auto DeltaTime = GetWorld()->GetDeltaSeconds();
 	auto CorrectionAcceleration = -SlippageSpeed / DeltaTime * GetRightVector();
 
 	//calculate and apply sideways for F=mxa
@@ -54,14 +59,17 @@ void UTankTrack::TickComponent(float DeltaTime, enum ELevelTick TickType, FActor
 
 
 
-
 void UTankTrack::SetThrottle(float Throttle)
 {
-	
-	auto ForceApplied = GetForwardVector()*Throttle*TrackMaxDrivingForce;
+	CurrentThrottle = FMath::Clamp<float>(CurrentThrottle + Throttle,-1.f,1.f);
+}
+
+void UTankTrack::DriveTrack()
+{
+	auto ForceApplied = GetForwardVector()*CurrentThrottle*TrackMaxDrivingForce;
 	auto ForceLocation = GetComponentLocation();
 
-	auto TankRoot = Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent());   
+	auto TankRoot = Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent());
 	//Owner ist Tank_BP, RootCompomemt ist Tank (StaticMesh)
 	//Casting because on PrimitiveComponents, forces can be applied
 	//The StaticMeshComponent is inherited from a MeshComponent which is inherited from a PrimitiveComponent
@@ -72,6 +80,5 @@ void UTankTrack::SetThrottle(float Throttle)
 	//auto Time = GetWorld()->GetTimeSeconds();
 	/*auto TrackName = GetName();
 	UE_LOG(LogTemp, Warning, TEXT("%s: force at: %s"), *TrackName, *(ForceApplied.ToString()))*/
-
 }
 
