@@ -7,8 +7,31 @@
 UTankTrack::UTankTrack()
 {
 	PrimaryComponentTick.bCanEverTick = true;
+}
+
+
+// Called when the game starts or when spawned
+void UTankTrack::BeginPlay()
+{
+	Super::BeginPlay();
+
+	//Register OnHit to be called when "this" component is hit
+	OnComponentHit.AddDynamic(this, &UTankTrack::OnHit);
+}
+
+
+void UTankTrack::OnHit(UPrimitiveComponent* HitComponent,
+						AActor* OtherActor,
+						UPrimitiveComponent* OtherComponent,
+						FVector NormalImpulse,
+						const FHitResult& Hit)
+{
+	UE_LOG(LogTemp,Warning,TEXT("%s   hit"), *GetName())
+
 
 }
+
+
 
 
 void UTankTrack::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunktion)
