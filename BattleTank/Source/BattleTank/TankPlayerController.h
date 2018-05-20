@@ -45,7 +45,7 @@ private:
 								//where the crosshair intersects the world
 	
 	bool GetSightRayHitLocation(FVector &HitLocation) const; //const means it is not allowed to change any variable of the class
-										//true means "hit"
+														     //true means "hit"
 
 	bool GetLookVectorHitLocation(FVector &CameraWorldLocation, FVector &Lookdirektion, FVector &HitLocation) const;
 

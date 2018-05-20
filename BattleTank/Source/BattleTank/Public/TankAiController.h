@@ -18,13 +18,13 @@ class BATTLETANK_API ATankAiController : public AAIController
 {
 	GENERATED_BODY()
 
+protected:
+	//How close can the AI Tank get to the player
+	UPROPERTY(EditDefaultsOnly, Category="SetUp")  //can not be changed in individual AIController of each tank
+		float AcceptanceRadius = 8000.f;
 
 public:
 	virtual void Tick(float DeltaTime) override;
-
-	//How close can the AI Tank get to the player
-	UPROPERTY(EditAnywhere)
-	float AcceptanceRadius = 3000.f;
 
 private:
 	void BeginPlay() override; //virtual function in the parent (Actor). A virtual function may be overwritten					   

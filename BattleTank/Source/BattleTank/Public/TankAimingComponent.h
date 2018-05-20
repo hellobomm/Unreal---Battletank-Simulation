@@ -41,6 +41,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void fire();
 
+	EFiringState GetFiringState()const;
+
 private:
 	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunktion) override;
 

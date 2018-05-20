@@ -29,6 +29,7 @@ void ATankPlayerController::AimTowardsCrosshair()
 	if (!ensure(AimingComponent)) return;
 
 	FVector HitLocation; //Out Parameter
+	//TODO out//bool bGotHitLocation = GetSightRayHitLocation(HitLocation); 
 	if (GetSightRayHitLocation(HitLocation))
 	{
 		//Tell Aiming Component to point at this tank
@@ -92,3 +93,4 @@ bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& 
 											CameraWorldLocation,
 											LookDirection);
 }
+
