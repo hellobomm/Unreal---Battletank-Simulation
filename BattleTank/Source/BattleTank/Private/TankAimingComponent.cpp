@@ -36,26 +36,35 @@ void UTankAimingComponent::Initialize(UTankBarrel * BarrelToSet, UTankTurret * T
 
 void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunktion)
 {
-	if ((FPlatformTime::Seconds() - LastReloadTime) < ReloadSeconds)
+	if (RoundsLeft <= 0)
 	{
-		FiringState = EFiringState::Reloading;
-		//UE_LOG(LogTemp, Warning, TEXT("reloading"))
-	}
-	else if (isBarrelMoving())
+		FiringState = EFiringState::OutOfAmmo;
+	}	
+	else if ((FPlatformTime::Seconds() - LastReloadTime) < ReloadSeconds)
 		{
-			//UE_LOG(LogTemp, Warning, TEXT("aiming"))
-			FiringState = EFiringState::Aiming;
+			FiringState = EFiringState::Reloading;
+			//UE_LOG(LogTemp, Warning, TEXT("reloading"))
 		}
-		else
-		{
-			//UE_LOG(LogTemp, Warning, TEXT("locked"))
-			FiringState = EFiringState::Locked;
-		}
+		else if (isBarrelMoving())
+			{
+				//UE_LOG(LogTemp, Warning, TEXT("aiming"))
+				FiringState = EFiringState::Aiming;
+			}
+			else
+			{
+				//UE_LOG(LogTemp, Warning, TEXT("locked"))
+				FiringState = EFiringState::Locked;
+			}
 }
 
 EFiringState UTankAimingComponent::GetFiringState() const
 {
 	return FiringState;
+}
+
+int UTankAimingComponent::GetRoundsLeft() const
+{
+	return RoundsLeft;
 }
 
 void UTankAimingComponent::AimAt(FVector HitLocation)
@@ -122,10 +131,11 @@ bool UTankAimingComponent::isBarrelMoving()
 
 void UTankAimingComponent::fire()
 {
-	if (!ensure(Barrel&&ProjectileBlueprint))return;
-	
-	if (FiringState != EFiringState::Reloading)
+
+	if (FiringState == EFiringState::Locked || FiringState == EFiringState::Aiming)
 	{
+		if (!ensure(Barrel&&ProjectileBlueprint))return;
+
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint,
 						Barrel->GetSocketLocation(FName("Projectile")), //Socket was put on Barrel in tank_fbx_Barrel, 
 						Barrel->GetSocketRotation(FName("Projectile")));
@@ -137,5 +147,7 @@ void UTankAimingComponent::fire()
 		}
 		else Projectile->LaunchProjectile(LaunchSpeed); 
 		LastReloadTime = FPlatformTime::Seconds();
+		RoundsLeft += -1;
+		if (RoundsLeft <0)RoundsLeft = 0;
 	}
 }
