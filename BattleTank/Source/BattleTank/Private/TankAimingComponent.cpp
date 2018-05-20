@@ -131,7 +131,6 @@ bool UTankAimingComponent::isBarrelMoving()
 
 void UTankAimingComponent::fire()
 {
-
 	if (FiringState == EFiringState::Locked || FiringState == EFiringState::Aiming)
 	{
 		if (!ensure(Barrel&&ProjectileBlueprint))return;
