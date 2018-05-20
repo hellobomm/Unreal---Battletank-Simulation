@@ -11,6 +11,9 @@ AProjectile::AProjectile()
 	//No need to protect pointers
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(FName("ProjectileMovement Component"));
 	ProjectileMovement->bAutoActivate = false; //makes projectile not shoot off when spawned
+
+	CollisionMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("ProjectileCollision Component"));
+	LaunchBlast = CreateDefaultSubobject<UParticleSystemComponent>(FName("ProjectileLaunchBlast Component"));
 }
 
 // Called when the game starts or when spawned
