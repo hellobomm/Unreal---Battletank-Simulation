@@ -3,6 +3,7 @@
 
 # Visual Studio 2015 database file
 *.VC.db
+BattleTank.VC.VC.opendb
 
 # Compiled Object files
 *.slo
@@ -50,8 +51,6 @@ SourceArt/**/*.tga
 
 # Binary Files
 Binaries/*
-
-Content/StarterContent
 
 # Builds
 Build/*
