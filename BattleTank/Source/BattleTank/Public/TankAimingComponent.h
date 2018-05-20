@@ -62,7 +62,7 @@ private:
 
 	//TODO remove once firing is moved to aiming component
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")   //EditAnyWhere means, value can be edited in every instance and set to a different value
-		float LaunchSpeed = 4000;
+		float LaunchSpeed = 8000;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 		int32 RoundsLeft = 30;
