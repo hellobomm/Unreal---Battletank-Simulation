@@ -9,11 +9,19 @@ AProjectile::AProjectile()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	//No need to protect pointers
+
+	CollisionMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("Collision Mesh"));
+	SetRootComponent(CollisionMesh);
+	CollisionMesh->SetNotifyRigidBodyCollision(true);
+	CollisionMesh->SetVisibility(true);
+
+	LaunchBlast = CreateDefaultSubobject<UParticleSystemComponent>(FName("Launch Blast"));
+	LaunchBlast->SetupAttachment(RootComponent);
+
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(FName("ProjectileMovement Component"));
 	ProjectileMovement->bAutoActivate = false; //makes projectile not shoot off when spawned
 
-	CollisionMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("ProjectileCollision Component"));
-	LaunchBlast = CreateDefaultSubobject<UParticleSystemComponent>(FName("ProjectileLaunchBlast Component"));
+	
 }
 
 // Called when the game starts or when spawned
@@ -35,6 +43,8 @@ void AProjectile::LaunchProjectile(float speed)
 	if (!ensure(ProjectileMovement))return;
 	ProjectileMovement->SetVelocityInLocalSpace(FVector::ForwardVector*speed);
 	ProjectileMovement->Activate(true);
-	/*auto Time = GetWorld()->GetTimeSeconds();
-	UE_LOG(LogTemp, Warning, TEXT("%f: projectile launched!"), Time)*/
+
+	FVector Velo = ProjectileMovement->Velocity;
+	//*auto Time = GetWorld()->GetTimeSeconds();
+	UE_LOG(LogTemp, Warning, TEXT("%s: projectile launched!"), *Velo.ToString())
 }
