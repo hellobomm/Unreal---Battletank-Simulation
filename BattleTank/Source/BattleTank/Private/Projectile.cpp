@@ -1,6 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Projectile.h"
+#include "Engine/World.h"
+#include "TimerManager.h"
 
 
 // Sets default values
@@ -53,6 +55,14 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent,
 	LaunchBlast->Deactivate();
 	ImpactBlast->Activate();
 	ExplosionForce->FireImpulse();
+
+	//we plan do destroy the CollisionMesh which is the current RootComponent. So first we set the new RootComponent. If we delete the RootObject Unreal does not crash but this is cleaner
+	SetRootComponent(ImpactBlast); 
+	//and then we can destroy the CollisionMesh. It also contains the Texture of the projectile so it becomes invisible
+	CollisionMesh->DestroyComponent();
+
+	FTimerHandle Timer;
+	GetWorld()->GetTimerManager().SetTimer(Timer, this, &AProjectile::OnTimerExpire, DestroyDelay);
 }
 
 void AProjectile::LaunchProjectile(float speed)
@@ -60,4 +70,10 @@ void AProjectile::LaunchProjectile(float speed)
 	if (!ensure(ProjectileMovement))return;
 	ProjectileMovement->SetVelocityInLocalSpace(FVector::ForwardVector*speed);
 	ProjectileMovement->Activate(true); //only NOW it moves
+}
+
+//our DelegateMethod
+void AProjectile::OnTimerExpire()
+{
+	Destroy();
 }

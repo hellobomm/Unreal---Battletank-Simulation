@@ -31,7 +31,7 @@ public:
 	//called by the tank
 	void LaunchProjectile(float speed);
 
-	
+
 private:
 	UPROPERTY(VisibleAnywhere, Category ="Components")    //shows the details
 		UStaticMeshComponent* CollisionMesh = nullptr;
@@ -48,4 +48,8 @@ private:
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent * HitComponent, AActor * OtherActor, UPrimitiveComponent * OtherComponent, FVector NormalImpulse, const FHitResult & Hit);
 
+	UPROPERTY(EditDefaultsOnly, Category = "SetUp")
+		float DestroyDelay = 5.f;
+
+	void OnTimerExpire();
 };
