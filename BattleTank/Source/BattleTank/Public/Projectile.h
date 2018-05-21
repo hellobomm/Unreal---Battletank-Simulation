@@ -45,6 +45,9 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Components")		//shows the details
 		URadialForceComponent* ExplosionForce = nullptr;
 
+	UPROPERTY(EditDefaultsOnly, Category = "SetUp")
+		float ProjectileDamage=20.f; //Damage that is spread to other actors when hit
+
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent * HitComponent, AActor * OtherActor, UPrimitiveComponent * OtherComponent, FVector NormalImpulse, const FHitResult & Hit);
 

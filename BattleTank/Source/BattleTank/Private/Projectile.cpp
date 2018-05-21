@@ -3,6 +3,7 @@
 #include "Projectile.h"
 #include "Engine/World.h"
 #include "TimerManager.h"
+#include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 
 
 // Sets default values
@@ -61,6 +62,17 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent,
 	//and then we can destroy the CollisionMesh. It also contains the Texture of the projectile so it becomes invisible
 	CollisionMesh->DestroyComponent();
 
+	UGameplayStatics::ApplyRadialDamage(
+		this,
+		ProjectileDamage,
+		GetActorLocation(),
+		ExplosionForce->Radius,
+		UDamageType::StaticClass(),
+		TArray<AActor*>() //damage all actors (in this Radius)
+	);
+
+
+	//now set a timer which calls our Destroy function
 	FTimerHandle Timer;
 	GetWorld()->GetTimerManager().SetTimer(Timer, this, &AProjectile::OnTimerExpire, DestroyDelay);
 }
