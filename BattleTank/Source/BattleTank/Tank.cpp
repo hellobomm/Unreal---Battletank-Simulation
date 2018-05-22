@@ -25,8 +25,9 @@ float ATank::TakeDamage
 	CurrentHealth -= DamageToApply;
 	if (CurrentHealth <= 0)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Tank died"))
 		CurrentHealth = 0;
+		//tell whoever is bound to the OnTankDied delegate, that the tank is dead
+		OnTankDied.Broadcast();
 	}
 
 	return DamageToApply;

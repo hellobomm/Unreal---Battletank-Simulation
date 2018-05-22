@@ -23,9 +23,18 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category="SetUp")  //can not be changed in individual AIController of each tank
 		float AcceptanceRadius = 8000.f;
 
-public:
+
+	
+private:
+	virtual void BeginPlay() override; //virtual function in the parent (Actor). A virtual function may be overwritten					   
+
 	virtual void Tick(float DeltaTime) override;
 
-private:
-	void BeginPlay() override; //virtual function in the parent (Actor). A virtual function may be overwritten					   
+	virtual void SetPawn(APawn* InPawn) override; //gets called when the pawn is possesed
+					//the right moment to register (to bind) to our delegate for receiving broadcasts
+
+	//if the possessed tank dies
+	UFUNCTION()
+	void OnPossessedTankDeath();
+
 };

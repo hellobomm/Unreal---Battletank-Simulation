@@ -7,6 +7,8 @@
 #include "Tank.generated.h"
 
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDeathDelegate);
+
 UCLASS()
 class BATTLETANK_API ATank : public APawn
 {
@@ -29,6 +31,9 @@ public:
 	//returns current as a percentage of starting health health between 0 and 1
 	UFUNCTION(BlueprintPure, Category = "Health")
 	float GetHealthPercent() const;
+	
+	//our Death delegate who broadcasts that the Tank has died
+	FDeathDelegate OnTankDied;
 
 
 };

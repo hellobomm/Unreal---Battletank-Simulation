@@ -34,6 +34,13 @@ private:
 
 	bool GetLookDirection(FVector2D ScreenLocation, FVector & LookDirection, FVector& CameraWorldLocation) const;
 	
+	virtual void SetPawn(APawn* InPawn) override; //gets called when the pawn is possesed
+												  //the right moment to register (to bind) to our delegate for receiving broadcasts
+
+	//if the possessed tank dies
+	UFUNCTION()
+		void OnPossessedTankDeath();
+
 	UPROPERTY(EditDefaultsOnly)
 	float CrossHairXLocation=0.5f;
 	UPROPERTY(EditDefaultsOnly)
