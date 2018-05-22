@@ -76,7 +76,7 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector &CameraWorldLocatio
 	if (!GetWorld()->LineTraceSingleByChannel(	ResultOfHit,
 												CameraWorldLocation, //Ray Start
 												CameraWorldLocation + LineTraceRange*Lookdirektion, //Ray End
-												ECC_Visibility))
+												ECC_Camera))
 	{
 		return false;
 	}
