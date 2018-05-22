@@ -30,7 +30,6 @@ void ATankPlayerController::AimTowardsCrosshair()
 	if (!ensure(AimingComponent)) return;
 
 	FVector HitLocation; //Out Parameter
-	//TODO out//bool bGotHitLocation = GetSightRayHitLocation(HitLocation); 
 	if (GetSightRayHitLocation(HitLocation))
 	{
 		//Tell Aiming Component to point at this tank
@@ -115,4 +114,6 @@ void ATankPlayerController::SetPawn(APawn * InPawn)
 void ATankPlayerController::OnPossessedTankDeath(void)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Tank %s  died"), *(GetPawn()->GetName()))
+	//let our ghost over above our dead tank
+	StartSpectatingOnly();
 }

@@ -22,9 +22,11 @@ private:
 	int32 StartingHealth = 100;
 
 	UPROPERTY(VisibleAnywhere, Category = "SetUp")
-	int32 CurrentHealth=StartingHealth;  //ui!!
+	int32 CurrentHealth;  //not initialised yet
 
 public:
+	virtual void BeginPlay()override;
+
 	//will be called when Actor is hit (if another actor calls ApplyRadialDamage)
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const & DamageEvent, class AController * EventInstigator, AActor * DamageCauser) override;
 
@@ -34,6 +36,4 @@ public:
 	
 	//our Death delegate who broadcasts that the Tank has died
 	FDeathDelegate OnTankDied;
-
-
 };

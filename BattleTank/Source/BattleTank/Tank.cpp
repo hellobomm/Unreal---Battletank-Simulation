@@ -11,6 +11,14 @@ ATank::ATank()
 }
 
 
+void ATank::BeginPlay()
+{
+	Super::BeginPlay();
+	CurrentHealth = StartingHealth;
+}
+
+
+
 float ATank::TakeDamage
 (
 	float DamageAmount,
