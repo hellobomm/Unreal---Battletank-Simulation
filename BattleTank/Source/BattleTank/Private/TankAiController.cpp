@@ -23,7 +23,7 @@ void ATankAiController::Tick(float DeltaTime)
 	auto PlayerTank = GetWorld()->GetFirstPlayerController()->GetPawn();
 	auto ControlledTank = GetPawn();
 
-	if (!ensure(PlayerTank&&ControlledTank)) return;
+	if (!(PlayerTank&&ControlledTank)) return; //ensure makes problems as the aicontroller could control a mortar
 
 	
 	//Move towards the player   (generates a request to move along a vector towards the player. 
