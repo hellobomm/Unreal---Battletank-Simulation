@@ -2,6 +2,7 @@
 
 #include "SpawnPoint.h"
 #include "Engine/World.h"
+#include "Kismet/GameplayStatics.h"
 
 
 // Sets default values for this component's properties
@@ -20,10 +21,17 @@ void USpawnPoint::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//
-	auto NewActor = GetWorld()->SpawnActor<AActor>(SpawnClass);
+	//ok watch out now. We spawn the actor deferred that means, its Construction Script of Blueprints and
+	//more importantly for us, its BeginPlay will NOT run! 
+	auto NewActor = GetWorld()->SpawnActorDeferred<AActor>(SpawnClass, GetComponentTransform());
 	if (!NewActor) return;
-	NewActor->AttachToComponent(this, FAttachmentTransformRules::KeepRelativeTransform);
+
+	//now we attach to the SpawnPoint
+	NewActor->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform); //we have already set the transformation so just keep it
+	
+	//Now we can finish the spawning. Only NOW the BeginPlay of the spawned Actor will run. Ok because we are now attached and the spawned actor
+	//will find the Tank they are ultimately now attached.
+	UGameplayStatics::FinishSpawningActor(NewActor, GetComponentTransform());
 }
 
 

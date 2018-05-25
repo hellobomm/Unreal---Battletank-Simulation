@@ -18,7 +18,6 @@ ASprungWheel::ASprungWheel()
 
 	Wheel = CreateDefaultSubobject<UStaticMeshComponent>(FName("Wheel"));
 	Wheel->SetupAttachment(MassWheelConstraint);  //better version than in projectile
-
 }
 
 // Called when the game starts or when spawned
@@ -32,7 +31,7 @@ void ASprungWheel::BeginPlay()
 	} 
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("not null"))
+		UE_LOG(LogTemp, Warning, TEXT("null"))
 	}
 }
 
