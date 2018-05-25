@@ -13,9 +13,6 @@ ASprungWheel::ASprungWheel()
 	MassWheelConstraint = CreateDefaultSubobject<UPhysicsConstraintComponent>(FName("MassWheelConstraint"));
 	SetRootComponent(MassWheelConstraint);
 	
-	Mass = CreateDefaultSubobject<UStaticMeshComponent>(FName("Mass"));
-	Mass->SetupAttachment(MassWheelConstraint);  //better version than in projectile
-
 	Wheel = CreateDefaultSubobject<UStaticMeshComponent>(FName("Wheel"));
 	Wheel->SetupAttachment(MassWheelConstraint);  //better version than in projectile
 }
@@ -25,14 +22,16 @@ void ASprungWheel::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (GetAttachParentActor())
-	{
-		UE_LOG(LogTemp,Warning, TEXT("not null"))
-	} 
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("null"))
-	}
+	SetupConstraint();
+}
+
+void ASprungWheel::SetupConstraint()
+{
+	auto ParentTank = GetAttachParentActor();
+	if (!ParentTank)return;
+	UPrimitiveComponent* TankBodyPrimitive = Cast<UPrimitiveComponent>(ParentTank->GetRootComponent());
+	if (!TankBodyPrimitive)return;
+	MassWheelConstraint->SetConstrainedComponents(TankBodyPrimitive, NAME_None, Wheel, NAME_None);
 }
 
 // Called every frame

@@ -21,14 +21,13 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	void SetupConstraint();
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 private:
-
-	UPROPERTY(VisibleAnywhere, Category = "Components")    //shows the details
-		UStaticMeshComponent* Mass = nullptr;
 
 	UPROPERTY(VisibleAnywhere,Category= "Components")
 		UPhysicsConstraintComponent* MassWheelConstraint = nullptr;
