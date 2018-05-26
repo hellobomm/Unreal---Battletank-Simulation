@@ -10,11 +10,18 @@ ASprungWheel::ASprungWheel()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	MassWheelConstraint = CreateDefaultSubobject<UPhysicsConstraintComponent>(FName("MassWheelConstraint"));
-	SetRootComponent(MassWheelConstraint);
+	MassAxleConstraint = CreateDefaultSubobject<UPhysicsConstraintComponent>(FName("MassAxleConstraint"));
+	SetRootComponent(MassAxleConstraint);
 	
-	Wheel = CreateDefaultSubobject<UStaticMeshComponent>(FName("Wheel"));
-	Wheel->SetupAttachment(MassWheelConstraint);  //better version than in projectile
+	Axle = CreateDefaultSubobject<UStaticMeshComponent>(FName("Axle"));
+	Axle->SetupAttachment(MassAxleConstraint);
+
+	AxleWheelConstraint = CreateDefaultSubobject<UPhysicsConstraintComponent>(FName("AxleWheelConstraint"));
+	AxleWheelConstraint->SetupAttachment(Axle);
+
+	Wheel = CreateDefaultSubobject<UStaticMeshComponent>(FName("Wheely"));
+	Wheel->SetupAttachment(AxleWheelConstraint);  //better version than in projectile
+
 }
 
 // Called when the game starts or when spawned
@@ -22,7 +29,7 @@ void ASprungWheel::BeginPlay()
 {
 	Super::BeginPlay();
 
-	SetupConstraint();
+	 SetupConstraint();
 }
 
 void ASprungWheel::SetupConstraint()
@@ -31,7 +38,9 @@ void ASprungWheel::SetupConstraint()
 	if (!ParentTank)return;
 	UPrimitiveComponent* TankBodyPrimitive = Cast<UPrimitiveComponent>(ParentTank->GetRootComponent());
 	if (!TankBodyPrimitive)return;
-	MassWheelConstraint->SetConstrainedComponents(TankBodyPrimitive, NAME_None, Wheel, NAME_None);
+
+	MassAxleConstraint->SetConstrainedComponents(TankBodyPrimitive, NAME_None, Axle, NAME_None);
+	AxleWheelConstraint->SetConstrainedComponents(Axle, NAME_None, Wheel, NAME_None);
 }
 
 // Called every frame

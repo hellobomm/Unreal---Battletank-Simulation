@@ -30,9 +30,17 @@ public:
 private:
 
 	UPROPERTY(VisibleAnywhere,Category= "Components")
-		UPhysicsConstraintComponent* MassWheelConstraint = nullptr;
+		UPhysicsConstraintComponent* MassAxleConstraint = nullptr;
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")    //shows the details
+		UStaticMeshComponent* Axle = nullptr;
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+		UPhysicsConstraintComponent* AxleWheelConstraint = nullptr;
+	
+	UPROPERTY(VisibleAnywhere, Category = "Components", meta = (AllowPrivateAccess = "true"))    //shows the details
 		UStaticMeshComponent* Wheel = nullptr;
 
 };
+
+
