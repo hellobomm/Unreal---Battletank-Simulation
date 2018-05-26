@@ -17,16 +17,19 @@ public:
 	// Sets default values for this component's properties
 	USpawnPoint();
 
+	// Called every frame
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+	AActor* GetSpawnedActor()const {return SpawnedActor;} //kakkoii!!!
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "SetUp")
 		TSubclassOf<AActor> SpawnClass; //makes the "SpawnClass" be chosen in the Tankblueprint of which the SpawnPoint is a component
-													
+			
+	UPROPERTY()  //needed so the garbage collector takes care of it
+	AActor* SpawnedActor = nullptr;
 };

@@ -4,6 +4,9 @@
 
 #include "TankTrack.h"
 #include "Engine/World.h"
+#include "SprungWheel.h"
+#include "SpawnPoint.h"
+#include "Components/SceneComponent.h"
 
 
 
@@ -13,69 +16,59 @@ UTankTrack::UTankTrack()
 }
 
 
-// Called when the game starts or when spawned
-void UTankTrack::BeginPlay()
+TArray<ASprungWheel*> UTankTrack::GetWheels() const  //const also here if it is in the header
 {
-	Super::BeginPlay();
+	TArray<ASprungWheel*> ResultArray; //now let's populate it
 
-	//Register OnHit to be called when "this" component is hit
-	OnComponentHit.AddDynamic(this, &UTankTrack::OnHit);
-}
+	
+	//first get the spawn points. These are child components of the Track
+	TArray<USceneComponent*> children;
+	GetChildrenComponents(true, children); //true means we want all decendants, not only the children
+	
+	//now iterate through the SpawnPoints
+	for (USceneComponent* child : children)
+	{
+		auto SpawnPointChild = Cast<USpawnPoint>(child);
+		if (!SpawnPointChild) continue;
 
+		//aaand we find the Sprung wheel
+		AActor* SpawnedChild = SpawnPointChild->GetSpawnedActor();
+		auto SprungWheel = Cast<ASprungWheel>(SpawnedChild);
+		if (!SprungWheel)continue;
 
-//gets called every frame if there is contact
-void UTankTrack::OnHit(UPrimitiveComponent* HitComponent,
-						AActor* OtherActor,
-						UPrimitiveComponent* OtherComponent,
-						FVector NormalImpulse,
-						const FHitResult& Hit)
-{
-	//Drive the Track
-	DriveTrack();
-
-	//Apply a sideways Force
-	ApplySideWaysForce();
-
-	//Reset Throttle
-	CurrentThrottle = 0.f;
-}
-
-void UTankTrack::ApplySideWaysForce()
-{
-	//calculate slippage speed
-	auto SlippageSpeed = FVector::DotProduct(GetRightVector(), GetOwner()->GetVelocity());
-
-	//UE_LOG(LogTemp,Warning,TEXT("%f"),SlippageSpeed)
-
-	//work out the required acceleration this frame to correct
-	auto DeltaTime = GetWorld()->GetDeltaSeconds();
-	auto CorrectionAcceleration = -SlippageSpeed / DeltaTime * GetRightVector();
-
-	//calculate and apply sideways for F=mxa
-	auto TankRoot = Cast < UStaticMeshComponent>(GetOwner()->GetRootComponent());
-	auto CorrectionForce = TankRoot->GetMass()*CorrectionAcceleration / 2; //two tracks
-	TankRoot->AddForce(CorrectionForce);
+		ResultArray.Add(SprungWheel);
+	}
+	return ResultArray;
 }
 
 
 
 void UTankTrack::SetThrottle(float Throttle)
 {
-	CurrentThrottle = FMath::Clamp<float>(CurrentThrottle + Throttle,-1.f,1.f);
+	float CurrentThrottle = FMath::Clamp<float>(Throttle,-1.f,1.f);
+	//Drive the Track
+	DriveTrack(CurrentThrottle);
 }
 
-void UTankTrack::DriveTrack()
+void UTankTrack::DriveTrack(float CurrentThrottle)
 {
-	auto ForceApplied = GetForwardVector()*CurrentThrottle*TrackMaxDrivingForce;
-	auto ForceLocation = GetComponentLocation();
+	auto ForceApplied =	CurrentThrottle*TrackMaxDrivingForce;
+	
+	//get the TArray
+	auto Wheels = GetWheels();
+	auto ForcePerWheel = ForceApplied / Wheels.Num();
 
-	auto TankRoot = Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent());
+	for (ASprungWheel* Wheel : Wheels) //and apply Force to each wheel
+	{
+		Wheel->AddDrivingForce(ForcePerWheel);
+	}
+	//auto TankRoot = Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent());
 	//Owner ist Tank_BP, RootCompomemt ist Tank (StaticMesh)
 	//Casting because on PrimitiveComponents, forces can be applied
 	//The StaticMeshComponent is inherited from a MeshComponent which is inherited from a PrimitiveComponent
 	//see class hirarchy
 
-	TankRoot->AddForceAtLocation(ForceApplied, ForceLocation);
+	//TankRoot->AddForceAtLocation(ForceApplied, ForceLocation);
 
 	//auto Time = GetWorld()->GetTimeSeconds();
 	/*auto TrackName = GetName();
