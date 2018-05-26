@@ -45,4 +45,10 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Components")    //shows the details
 		USphereComponent* Wheel = nullptr;
 
+	UFUNCTION() //important so that Unreal registers it
+	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
+	void ApplyForce();
+
+	float TotalForceMagnitudeThisFrame{ 0 };
 };
